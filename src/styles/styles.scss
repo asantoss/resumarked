@@ -1,7 +1,8 @@
+
 .writer_container{
     display: flex;
     justify-content: space-evenly;
-    height: 50vh;
+    height: 80vh;
     align-items: stretch;
     .writer_parser{
         width: 50%;
@@ -42,3 +43,14 @@
     background-color: #ffffff;
 }
 
+.link:hover{
+    cursor: pointer;
+    opacity: 0.75;
+}
+.link{
+    text-decoration: none;
+    color: #ffffff;
+}
+.CodeMirror{
+    height: 80vh
+}
