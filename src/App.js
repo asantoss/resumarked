@@ -35,13 +35,12 @@ function App() {
   // }
   return (
     <div className="App">
-<<<<<<< HEAD
-  <Router>
-    <Navbar />
-    <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-    <Route exact path={ROUTES.WRITER} component={MarkdownWriter} />
-  </Router>
-  {/* 
+      <Router>
+        <Navbar />
+        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+        <Route exact path={ROUTES.WRITER} component={MarkdownWriter} />
+      </Router>
+      {/* 
         <Navbar />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route path={ROUTES.ABOUT} component={HomePage} />
@@ -50,11 +49,6 @@ function App() {
         <Route path={ROUTES.ADMIN} component={AdminPage} />
        */}
 
-=======
-      <Navbar />
-      <p>Welcome to Resumake, this is an app to help you on your developer journey. Within this editor you can use a mix of HTML,CSS & Markdown to help your resume presentation.</p>
-      <MarkdownWriter />
->>>>>>> master
     </div >
   );
 }

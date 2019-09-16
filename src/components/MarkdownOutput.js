@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
-import firebaseApp from '../firebase';
+import { firebaseApp } from '../firebase';
 import SavePDF from './SavePDF';
 
 const db = firebaseApp.firestore();
@@ -33,7 +33,8 @@ export default class MarkdownWriter extends Component {
             readOnly: false,
             theme: 'monokai',
             saving: false,
-            userName: 'Alexander Santos'
+            userName: 'Alexander Santos',
+            HTMLOption: false
         };
     }
     componentDidMount() {
@@ -58,6 +59,13 @@ export default class MarkdownWriter extends Component {
             theme: theme
         })
     }
+    changeHTMLOption(e) {
+        const option = e.target.value === 'yes' ? false : true
+        this.setState({
+            ...this.state,
+            HTMLOption: option
+        })
+    }
     toggleReadOnly() {
         this.setState({
             ...this.state, readOnly: !this.state.readOnly
@@ -76,26 +84,9 @@ export default class MarkdownWriter extends Component {
     handleLocalLoad(e) {
         const resume = localStorage.getItem('resumarkedDocument');
         this.setState({ ...this.state, value: resume })
-
-<<<<<<< HEAD
     }
     handleLocalSave(e) {
-        // db.collection('templates').doc('bnWflPGPTsee8qU6kupD').set({
-        //     name: "Alexander Santos",
-        //     template: this.state.value
-        // }).then(() => {
-        //     this.setState({ ...this.state, saving: !this.state.saving, readOnly: !this.state.readOnly })
-        // })
         localStorage.setItem('resumarkedDocument', this.state.value);
-=======
-    handleDBSave(e) {
-        this.setState({ ...this.state, saving: !this.state.saving, readOnly: !this.state.readOnly })
-        db.collection('templates').doc('alexanderDoc').set({
-            template: this.state.value
-        }).then(() => {
-            this.setState({ ...this.state, saving: !this.state.saving, readOnly: !this.state.readOnly })
-        })
->>>>>>> master
     }
 
     handleTextChange(value) {
@@ -109,35 +100,38 @@ export default class MarkdownWriter extends Component {
             theme: this.state.theme,
             lineWrapping: true,
         }
-        const templatesArray = this.state.templates
+        const templatesArray = this.state.templates;
+        const resume = !!localStorage.getItem('resumarkedDocument') && localStorage.getItem('resumarkedDocument');
         return (
             <div>
                 <p>Welcome to Resumake, this is an app to help you on your developer journey. Within this editor you can use a mix of HTML,CSS & Markdown to help your resume presentation.</p>
                 <div className="writer_container">
                     <div className="writer_input">
-                        <div style={{ marginTop: 10 }} className="buttons_list">
-                            <input type="text" name="documentName" placeholder="Document Name" onChange={(e) => { this.setState({ ...this.state, docName: e.target.value }) }} id="" />
-                            <select onChange={this.changeMode.bind(this)} value={this.state.mode}>
-                                <option value="markdown">Markdown</option>
-                            </select>
-                            <select onChange={this.handleNewTemplate.bind(this)} >
-                                {templatesArray && templatesArray.map((template, i) => <option className="templateBtn" key={i} value={template.name}>{template.name}</option>)}
-                            </select>
-                            <select onChange={this.changeTheme.bind(this)} value={this.state.theme}>
-                                <option value="monokai">Monokai</option>
-                                <option value="material">Material</option>
-                                <option value="paraiso-dark">Paraiso Dark</option>
-                                <option value="darcula">Darcula</option>
-                                <option value="ambiance">Ambiance</option>
-                            </select>
-                            <button onClick={this.toggleReadOnly.bind(this)}>Toggle read-only mode (currently {this.state.readOnly ? 'on' : 'off'})</button>
-<<<<<<< HEAD
-                            <button onClick={this.handleLocalSave.bind(this)}>{this.state.saving ? 'Saving...' : 'Save'}</button>
-                            <button onClick={this.handleLocalLoad.bind(this)}>{this.state.loading ? 'Loading' : 'Load'}</button>
-=======
-                            <button onClick={this.handleDBSave.bind(this)}>{this.state.saving ? 'Saving...' : 'Save'}</button>
-                            <SavePDF fileName={this.state.userName} pdfstatus={false} />
->>>>>>> master
+                        <div style={{ marginTop: 10 }}>
+                            <div className="selects_list">
+                                <label htmlFor="templates">Template: </label>
+                                <select onChange={this.handleNewTemplate.bind(this)} id="templates" >
+                                    {templatesArray && templatesArray.map((template, i) => <option className="templateBtn" key={i} value={template.name}>{template.name}</option>)}
+                                </select>
+                                <label htmlFor="themeSelect">Theme: </label>
+                                <select id="themeSelect" onChange={this.changeTheme.bind(this)} value={this.state.theme}>
+                                    <option value="monokai">Monokai</option>
+                                    <option value="material">Material</option>
+                                    <option value="paraiso-dark">Paraiso Dark</option>
+                                    <option value="darcula">Darcula</option>
+                                    <option value="ambiance">Ambiance</option>
+                                </select>
+                                <label htmlFor="htmlOpt">Html On: </label>
+                                <select onChange={this.changeHTMLOption.bind(this)} id="htmlOpt">
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select></div>
+                            <div className="buttons_list">
+                                <button onClick={this.toggleReadOnly.bind(this)}>Toggle read-only mode (currently {this.state.readOnly ? 'on' : 'off'})</button>
+                                <button onClick={this.handleLocalSave.bind(this)}>{this.state.value === resume ? 'Saved' : 'Save'}</button>
+                                <button onClick={this.handleLocalLoad.bind(this)}>{resume && 'Load'}</button>
+                                <SavePDF />
+                            </div>
                         </div>
                         <CodeMirror
                             className="mdTextArea"
@@ -150,7 +144,7 @@ export default class MarkdownWriter extends Component {
                             }}
                         />
                     </div>
-                    <ReactMarkdown className="writer_parser" id={'jsx-template'} source={this.state.value} escapeHtml={false} />
+                    <ReactMarkdown className="writer_parser" source={this.state.value} escapeHtml={this.state.HTMLOption} />
                 </div>
             </div>
         )

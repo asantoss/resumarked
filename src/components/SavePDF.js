@@ -15,7 +15,7 @@ export default class SavePDF extends Component {
         }
     }
     convertHtmlToPdf(e) {
-        const html = document.querySelector('#root > div > div:nth-child(3) > div > div.writer_parser').innerHTML;
+        const html = document.querySelector('div.writer_parser').innerHTML;
         this.setState({ ...this.state, isGenerating: !this.state.isGenerating, isGenerated: false })
         fetch('https://v2018.api2pdf.com/chrome/html', {
             method: 'post',
