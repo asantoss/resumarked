@@ -24,7 +24,7 @@ export default class SavePDF extends Component {
                 'Content-Type': 'application/json',
                 'Authorization': process.env.REACT_APP_SECRET_CODE //Get your API key from https://portal.api2pdf.com
             },
-            body: JSON.stringify({ html: html, inlinePdf: true, scale: 0.75, fileName: `${this.props.fileName}resume.pdf` })
+            body: JSON.stringify({ html: html, inlinePdf: true, scale: 0.60, fileName: `${this.props.fileName}resume.pdf` })
         }).then(res => res.json())
             .then(res => {
                 this.setState({ ...this.state, isGenerating: !this.state.isGenerating, isGenerated: true, url: res.pdf })

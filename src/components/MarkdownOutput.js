@@ -73,12 +73,13 @@ export default class MarkdownWriter extends Component {
     }
 
     handleNewTemplate(e) {
-        const template = e.target.value
-        db.collection('templates').doc('bnWflPGPTsee8qU6kupD').get().then((doc => {
-            if (doc.exists) {
-                this.setState({ ...this.state, value: doc.data()[template] })
-            }
-        }))
+        const templateName = e.target.value;
+        console.log(templateName)
+        const templateObject = this.state.templates.filter(temp => {
+            return temp.name === templateName
+        })
+        console.log(templateObject)
+        this.setState({ ...this.state, value: templateObject[0].data })
 
     }
     handleLocalLoad(e) {
@@ -87,6 +88,11 @@ export default class MarkdownWriter extends Component {
     }
     handleLocalSave(e) {
         localStorage.setItem('resumarkedDocument', this.state.value);
+        // db.collection('templates').doc('alexanderResume').set({
+        //     name: "Alexander Resume",
+        //     template: true,
+        //     data: this.state.value
+        // }).then(() => console.log('Saved'))
     }
 
     handleTextChange(value) {
