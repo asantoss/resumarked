@@ -88,8 +88,8 @@ export default class MarkdownWriter extends Component {
     }
     handleLocalSave(e) {
         localStorage.setItem('resumarkedDocument', this.state.value);
-        // db.collection('templates').doc('alexanderResume').set({
-        //     name: "Alexander Resume",
+        // db.collection('templates').doc('template1').set({
+        //     name: "Resume Template",
         //     template: true,
         //     data: this.state.value
         // }).then(() => console.log('Saved'))
