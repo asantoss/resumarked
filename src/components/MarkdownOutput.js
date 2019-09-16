@@ -8,6 +8,7 @@ const db = firebaseApp.firestore();
 require('codemirror/mode/xml/xml');
 require('codemirror/mode/javascript/javascript');
 require('codemirror/mode/markdown/markdown');
+require('codemirror/mode/htmlmixed/htmlmixed');
 require('codemirror/lib/codemirror.css');
 require('codemirror/theme/material.css');
 require('codemirror/theme/monokai.css');
@@ -15,6 +16,11 @@ require('codemirror/theme/paraiso-dark.css');
 require('codemirror/theme/darcula.css');
 require('codemirror/theme/ambiance.css');
 require('codemirror/addon/wrap/hardwrap');
+require('codemirror/addon/edit/continuelist');
+require('codemirror/addon/hint/show-hint.css')
+require('codemirror/addon/hint/show-hint.js');
+require('codemirror/addon/hint/html-hint');
+require('codemirror/addon/hint/javascript-hint');
 
 const ReactMarkdown = require('react-markdown');
 
@@ -34,7 +40,7 @@ export default class MarkdownWriter extends Component {
             theme: 'monokai',
             saving: false,
             userName: 'Alexander Santos',
-            HTMLOption: false
+            HTMLOption: false,
         };
     }
     componentDidMount() {
@@ -74,11 +80,9 @@ export default class MarkdownWriter extends Component {
 
     handleNewTemplate(e) {
         const templateName = e.target.value;
-        console.log(templateName)
         const templateObject = this.state.templates.filter(temp => {
             return temp.name === templateName
         })
-        console.log(templateObject)
         this.setState({ ...this.state, value: templateObject[0].data })
 
     }
@@ -105,6 +109,9 @@ export default class MarkdownWriter extends Component {
             mode: this.state.mode,
             theme: this.state.theme,
             lineWrapping: true,
+            extraKeys: { 'Ctrl-Space': 'autocomplete', 'Enter': 'newlineAndIndentContinueMarkdownList' },
+            highlightFormatting: true,
+
         }
         const templatesArray = this.state.templates;
         const resume = !!localStorage.getItem('resumarkedDocument') && localStorage.getItem('resumarkedDocument');
@@ -140,6 +147,7 @@ export default class MarkdownWriter extends Component {
                             </div>
                         </div>
                         <CodeMirror
+                            ref="editor"
                             className="mdTextArea"
                             value={this.state.value}
                             options={options}
