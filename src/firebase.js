@@ -1,5 +1,5 @@
-import firebase from 'firebase';
-import React, { Component } from 'react'
+import firebase from 'firebase/app'
+import 'firebase/firebase-firestore'
 const config = {
     apiKey: "AIzaSyCCr15q1Tna0S9s2g6K5SQQM3FlLF9fSoY",
     authDomain: "resumarked.firebaseapp.com",

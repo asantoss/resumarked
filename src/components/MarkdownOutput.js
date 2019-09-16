@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
-import { firebaseApp } from '../firebase';
+import firebaseApp from '../firebase';
+import SavePDF from './SavePDF';
+
 const db = firebaseApp.firestore();
 
 require('codemirror/mode/xml/xml');
@@ -12,6 +14,7 @@ require('codemirror/theme/monokai.css');
 require('codemirror/theme/paraiso-dark.css');
 require('codemirror/theme/darcula.css');
 require('codemirror/theme/ambiance.css');
+require('codemirror/addon/wrap/hardwrap');
 
 const ReactMarkdown = require('react-markdown');
 
@@ -28,8 +31,9 @@ export default class MarkdownWriter extends Component {
             value: defaults.markdown,
             mode: 'markdown',
             readOnly: false,
-            theme: 'material',
-            saving: false
+            theme: 'monokai',
+            saving: false,
+            userName: 'Alexander Santos'
         };
     }
     componentDidMount() {
@@ -73,6 +77,7 @@ export default class MarkdownWriter extends Component {
         const resume = localStorage.getItem('resumarkedDocument');
         this.setState({ ...this.state, value: resume })
 
+<<<<<<< HEAD
     }
     handleLocalSave(e) {
         // db.collection('templates').doc('bnWflPGPTsee8qU6kupD').set({
@@ -82,17 +87,27 @@ export default class MarkdownWriter extends Component {
         //     this.setState({ ...this.state, saving: !this.state.saving, readOnly: !this.state.readOnly })
         // })
         localStorage.setItem('resumarkedDocument', this.state.value);
+=======
+    handleDBSave(e) {
+        this.setState({ ...this.state, saving: !this.state.saving, readOnly: !this.state.readOnly })
+        db.collection('templates').doc('alexanderDoc').set({
+            template: this.state.value
+        }).then(() => {
+            this.setState({ ...this.state, saving: !this.state.saving, readOnly: !this.state.readOnly })
+        })
+>>>>>>> master
     }
 
     handleTextChange(value) {
         this.setState({ ...this.state, value: value })
     }
     render() {
-        var options = {
+        const options = {
             lineNumbers: true,
             readOnly: this.state.readOnly,
             mode: this.state.mode,
-            theme: this.state.theme
+            theme: this.state.theme,
+            lineWrapping: true,
         }
         const templatesArray = this.state.templates
         return (
@@ -110,14 +125,19 @@ export default class MarkdownWriter extends Component {
                             </select>
                             <select onChange={this.changeTheme.bind(this)} value={this.state.theme}>
                                 <option value="monokai">Monokai</option>
-                                <option value="material-darker">Material</option>
+                                <option value="material">Material</option>
                                 <option value="paraiso-dark">Paraiso Dark</option>
                                 <option value="darcula">Darcula</option>
                                 <option value="ambiance">Ambiance</option>
                             </select>
                             <button onClick={this.toggleReadOnly.bind(this)}>Toggle read-only mode (currently {this.state.readOnly ? 'on' : 'off'})</button>
+<<<<<<< HEAD
                             <button onClick={this.handleLocalSave.bind(this)}>{this.state.saving ? 'Saving...' : 'Save'}</button>
                             <button onClick={this.handleLocalLoad.bind(this)}>{this.state.loading ? 'Loading' : 'Load'}</button>
+=======
+                            <button onClick={this.handleDBSave.bind(this)}>{this.state.saving ? 'Saving...' : 'Save'}</button>
+                            <SavePDF fileName={this.state.userName} pdfstatus={false} />
+>>>>>>> master
                         </div>
                         <CodeMirror
                             className="mdTextArea"
@@ -130,7 +150,7 @@ export default class MarkdownWriter extends Component {
                             }}
                         />
                     </div>
-                    <ReactMarkdown className="writer_parser" source={this.state.value} escapeHtml={false} />
+                    <ReactMarkdown className="writer_parser" id={'jsx-template'} source={this.state.value} escapeHtml={false} />
                 </div>
             </div>
         )
