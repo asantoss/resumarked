@@ -8,11 +8,14 @@ export default function Navbar(props) {
         <div className="header">
             <div className="logo"></div>
             <div className="header-links">
-                <Link to={ROUTES.LANDING} className="link">Home</Link>
-                <Link to={ROUTES.ABOUT} className="link">About</Link>
-                <Link to={ROUTES.ACCOUNT} className="link">Contact</Link>
-                <Link to={isLoggedIn ? ROUTES.SIGN_IN : ROUTES.SIGN_OUT} className="link">{isLoggedIn ? 'Sign Out' : 'Sign In'}</Link>
+
             </div>
         </div>
     )
 }
+
+
+// <Link to={ROUTES.LANDING} className="link">Home</Link>
+//     <Link to={ROUTES.ABOUT} className="link">About</Link>
+//     <Link to={ROUTES.ACCOUNT} className="link">Contact</Link>
+//     <Link to={isLoggedIn ? ROUTES.SIGN_IN : ROUTES.SIGN_OUT} className="link">{isLoggedIn ? 'Sign Out' : 'Sign In'}</Link>

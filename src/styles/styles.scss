@@ -11,6 +11,7 @@
     }
     .writer_input{
         width: 50%;
+        overflow-x: none;
         flex-grow: 1;
         .mdTextArea{
             resize: none;
@@ -52,5 +53,6 @@
     color: #ffffff;
 }
 .CodeMirror{
-    height: 80vh
+    height: 80vh;
+    
 }
